@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evaluación Clínica de la Convergencia</title>
+    <title>Evaluación Clínica de la Convergencia - Taller 1</title>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <style>
         body { background-color: #000000; color: #00ffff; font-family: 'Courier New', Courier, monospace; padding: 20px; display: flex; justify-content: center; }
         .container { border: 2px solid #00ffff; padding: 30px; max-width: 600px; width: 100%; border-radius: 10px; box-shadow: 0 0 15px #00ffff; }
@@ -26,19 +26,19 @@
     <button id="next-btn" style="display:none; width: 100%; padding: 10px; background: #00ffff; border: none; margin-top: 15px; cursor: pointer;" onclick="nextQuestion()">Siguiente Actividad</button>
 </div>
 
-
 <script>
     const firebaseConfig = {
-    apiKey: "AIzaSyD47_2UtWLFI_VRVvvXVAqn4zZzZ4d1ggo",
-    authDomain: "av-clinica-convergencia.firebaseapp.com",
-    databaseURL: "https://av-clinica-convergencia-default-rtdb.firebaseio.com",
-    projectId: "av-clinica-convergencia",
-    storageBucket: "av-clinica-convergencia.firebasestorage.app",
-    messagingSenderId: "939404425675",
-    appId: "1:939404425675:web:8cfae157099efabd741e4e"
-};
-if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-const db = firebase.firestore();
+        apiKey: "AIzaSyD47_2UtWLFI_VRVvvXVAqn4zZzZ4d1ggo",
+        authDomain: "av-clinica-convergencia.firebaseapp.com",
+        databaseURL: "https://av-clinica-convergencia-default-rtdb.firebaseio.com",
+        projectId: "av-clinica-convergencia",
+        storageBucket: "av-clinica-convergencia.firebasestorage.app",
+        messagingSenderId: "939404425675",
+        appId: "1:939404425675:web:8cfae157099efabd741e4e"
+    };
+    if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+    const db = firebase.firestore();
+
     const questions = [
         { q: "Ante la reacción somática de M., ¿cuál es la prioridad técnica?", options: ["Interpretar el trauma infantil", "Co-regulación vincular", "Ignorar la somatización", "Instruir ejercicios de relajación"], correct: 1, feedback: "La co-regulación es fundamental: sin estabilización biológica, la palabra no alcanza la corteza prefrontal." },
         { q: "¿Por qué la transferencia es una oportunidad de re-cableado?", options: ["Borra recuerdos traumáticos", "Sustituye la personalidad", "Permite reparación neurobiológica vincular", "Elimina la necesidad de medicación"], correct: 2, feedback: "El vínculo actual permite modificar los esquemas de estrés grabados en los receptores del eje HPA." },
@@ -57,81 +57,78 @@ const db = firebase.firestore();
     }
 
     function check(idx) {
-    const fb = document.getElementById('feedback');
-    fb.style.display = 'block';
-    
-    if(idx === questions[current].correct) {
-        score += 2;
-        fb.className = 'correct';
-        fb.innerHTML = "¡CORRECTO! " + questions[current].feedback;
-    } else {
-        fb.className = 'incorrect';
-        fb.innerHTML = "INCORRECTO. " + questions[current].feedback;
+        const fb = document.getElementById('feedback');
+        fb.style.display = 'block';
+        
+        if(idx === questions[current].correct) {
+            score += 2;
+            fb.className = 'correct';
+            fb.innerHTML = "¡CORRECTO! " + questions[current].feedback;
+        } else {
+            fb.className = 'incorrect';
+            fb.innerHTML = "INCORRECTO. " + questions[current].feedback;
+        }
+        
+        document.querySelectorAll('.option').forEach(el => el.style.pointerEvents = 'none');
+        document.getElementById('next-btn').style.display = 'block';
     }
-    
-    document.querySelectorAll('.option').forEach(el => el.style.pointerEvents = 'none');
-    document.getElementById('next-btn').style.display = 'block';
-}
 
-function nextQuestion() {
-    current++;
-    document.getElementById('feedback').style.display = 'none';
-    document.getElementById('next-btn').style.display = 'none';
-    
-    if(current < questions.length) {
-        render();
-    } else {
-        // Al terminar, inyectamos la identificación y el resultado
-        document.getElementById('app').innerHTML = `
-            <div id="results-card" style="text-align:center; padding:20px;">
-                <h1>Resultado Final</h1>
-                <p style="font-size: 24px;">Puntaje: <span id="final-score">${score}/10</span></p>
-                
-                <div id="identificacion-card" style="border: 2px solid #D4AF37; padding: 20px; text-align: center; margin: 20px auto; max-width: 400px; background-color: #f9f9f9;">
-                    <h3 style="margin-top: 0;">Identificación</h3>
-                    <input type="text" id="input-nombre" placeholder="Ingresa tu nombre y apellido" required style="padding: 10px; width: 80%; border: 1px solid #ccc; border-radius: 4px;">
+    function nextQuestion() {
+        current++;
+        document.getElementById('feedback').style.display = 'none';
+        document.getElementById('next-btn').style.display = 'none';
+        
+        if(current < questions.length) {
+            render();
+        } else {
+            document.getElementById('app').innerHTML = `
+                <div id="results-card" style="text-align:center; padding:20px;">
+                    <h1>Resultado Final</h1>
+                    <p style="font-size: 24px;">Puntaje: <span id="final-score">${score}/10</span></p>
+                    
+                    <div id="identificacion-card" style="border: 2px solid #D4AF37; padding: 20px; text-align: center; margin: 20px auto; max-width: 400px; background-color: #050508;">
+                        <h3 style="margin-top: 0; color: #D4AF37;">Identificación</h3>
+                        <input type="text" id="input-nombre" placeholder="APELLIDO Nombre (Ej: PEREZ Juan)" required style="padding: 10px; width: 90%; background: #000; color: #00ffff; border: 1px solid #00ffff; border-radius: 4px; text-align: center;">
+                    </div>
+
+                    <button onclick="mostrarResultadosFinales()" style="padding: 10px 20px; background: #00ffff; color: #000; border: none; cursor: pointer; font-weight: bold; font-family: 'Courier New', Courier, monospace;">Finalizar y Guardar</button>
+                    <div id="final-dictamen" style="margin-top: 20px;"></div>
                 </div>
-
-                <button onclick="mostrarResultadosFinales()" style="padding: 10px 20px; background: #D4AF37; border: none; cursor: pointer; font-weight: bold;">Finalizar y Guardar</button>
-                <div id="final-dictamen" style="margin-top: 20px;"></div>
-            </div>
-        `;
-    }
-}
-
-// Esta es la función que procesa el guardado final
-function mostrarResultadosFinales() {
-    const nombreIngresado = document.getElementById('input-nombre').value;
-    const dictamenBox = document.getElementById('final-dictamen');
-    
-    if (!nombreIngresado || nombreIngresado.trim() === "") {
-        alert("Por favor, ingresa tu nombre y apellido antes de finalizar.");
-        return;
+            `;
+        }
     }
 
-    // Lógica de dictamen
-    let dictamen = `<p><strong>Dictamen:</strong> ${score >= 7 ? "Idoneidad Clínica Convalidada." : "Revisión Técnica Prescripta."}</p>`;
-    dictamenBox.innerHTML = dictamen;
+    function mostrarResultadosFinales() {
+        const nombreIngresado = document.getElementById('input-nombre').value.trim();
+        const formatoValido = /^[A-ZÁÉÍÓÚÑ]+ [A-Za-zÁÉÍÓÚÑ\s]+$/;
+        const dictamenBox = document.getElementById('final-dictamen');
+        
+        if (!formatoValido.test(nombreIngresado)) {
+            alert("Error: Debe ingresar APELLIDO Nombre (Ejemplo: PEREZ Juan).");
+            return;
+        }
 
-    // Guardado en Firestore
-    db.collection("resultados_talleres").add({
-        alumno: nombreIngresado,
-        taller_numero: "Taller 1", // <--- Recuerda cambiar esto en cada archivo
-        nota: score + "/10",
-        fecha: new Date().toLocaleString(),
-        verificado: false
-    })
-    .then(() => {
-        dictamenBox.innerHTML += `<p style="color: #00FF88; margin-top: 15px;">✓ Resultados guardados en Talleres.</p>`;
-    })
-    .catch((error) => {
-        console.error("Error al guardar:", error);
-        dictamenBox.innerHTML += `<p style="color: #FF0000; margin-top: 15px;">X Error al guardar.</p>`;
-    });
-}
+        let dictamen = `<p><strong>Dictamen:</strong> ${score >= 7 ? "Idoneidad Clínica Convalidada." : "Revisión Técnica Prescripta."}</p>`;
+        dictamenBox.innerHTML = dictamen;
+
+        // Guardado en la colección 'resultados_talleres' con visibilidad en false
+        db.collection("resultados_talleres").add({
+            alumno: nombreIngresado,
+            taller_numero: "Taller 1",
+            nota: `${score}/10`,
+            fecha: new Date().toISOString(),
+            visibleParaAlumno: false
+        })
+        .then(() => {
+            dictamenBox.innerHTML += `<p style="color: #00FF88; margin-top: 15px;">✓ Resultados guardados exitosamente.</p>`;
+        })
+        .catch((error) => {
+            console.error("Error al guardar:", error);
+            dictamenBox.innerHTML += `<p style="color: #FF0000; margin-top: 15px;">X Error al guardar en Firebase.</p>`;
+        });
+    }
 
     render();
 </script>
-
 </body>
 </html>
